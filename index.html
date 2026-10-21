@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Job Apply Assistant</title>
+<style>
+:root{color-scheme:dark;--bg:#0f1117;--card:#1a1c26;--field:#12141c;--line:#2b2e3b;--tx:#f2f3f7;--mu:#9a9fb2;--ac:#7f95ff;--acx:#0f1117;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+h1{font-size:26px;margin:0 0 6px}
+.sub{color:var(--mu);margin:0 0 18px}
+.sw{display:flex;gap:8px;padding-top:6px}
+.sw i{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid var(--line);display:block}
+.sw i.on{border-color:var(--tx)}
+.pills{display:flex;gap:8px;margin-bottom:18px}
+.pill{background:var(--field);color:var(--tx);border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;font:inherit}
+.pill.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px}
+.card h2{font-size:17px;margin:0 0 14px}
+.row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px}
+@media(max-width:700px){.row,.row3{grid-template-columns:1fr}}
+label{display:block;color:var(--mu);font-size:13px;margin-bottom:5px}
+input[type=text],input[type=email],input[type=tel],select,textarea{width:100%;background:var(--field);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit}
+textarea{min-height:110px;resize:vertical}
+input[type=file]{width:100%;background:var(--field);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:10px}
+.field{margin-bottom:12px}
+.note{color:var(--mu);font-size:13px;margin:6px 0 12px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{background:transparent;color:var(--ac);border:1px solid var(--ac);border-radius:10px;padding:10px 16px;cursor:pointer;font:inherit}
+.btn.pri{background:var(--ac);color:var(--acx)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.portals{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 14px}
+.portals a{background:var(--field);border:1px solid var(--line);color:var(--ac);border-radius:10px;padding:9px 14px;text-decoration:none}
+.portals a:hover{border-color:var(--ac)}
+.chk{display:flex;gap:8px;align-items:center;margin:8px 0 12px;color:var(--tx)}
+.res{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.res li{margin:4px 0}.ok{color:#6fd39a}.bad{color:#f0a35e}
+.hide{display:none}
+.rh{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13px;background:var(--field)}
+.chip.ok{border-color:#2f6f4d;color:#6fd39a}.chip.bad{border-color:#7a5326;color:#f0a35e}
+.chip.add{cursor:pointer;color:var(--ac);border-color:var(--ac)}
+h3{font-size:14px;margin:12px 0 2px}
+.job{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;background:var(--field)}
+.jh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.jh select{width:auto}
+.stat{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:6px}
+.stat b{font-size:24px;display:block}
+.stat span{color:var(--mu);font-size:13px}
+.chip.f{cursor:pointer}.chip.sel{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+.row5{display:grid;grid-template-columns:1.3fr 1fr 1.3fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:700px){.row5{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div><h1>Job Apply Assistant</h1>
+<p class="sub">Find the latest fresher jobs on major portals. You apply manually.</p></div>
+<div class="sw" id="sw" title="Accent colour"></div></div>
+<div class="pills"><button class="pill on" id="t1">1. Profile</button><button class="pill" id="t2">2. Find jobs</button><button class="pill" id="t3">3. Tracker</button></div>
+
+<section id="p1">
+<div class="card">
+<h2>Your details</h2>
+<div class="row">
+<div><label>Full name</label><input type="text" id="name" placeholder="Your name"></div>
+<div><label>Email</label><input type="email" id="email" placeholder="you@example.com"></div>
+<div><label>Phone</label><input type="tel" id="phone" placeholder="Phone number"></div>
+<div><label>Preferred job location</label><input type="text" id="loc" placeholder="e.g. Bengaluru"></div>
+</div>
+<div class="field"><label>Your skills (comma separated, only ones you can speak to in interviews)</label><input type="text" id="skills" placeholder="e.g. Python, SQL, Excel, Git"></div>
+<div class="chips" id="sugg"></div>
+<div class="field"><label>Your resume (PDF, DOCX or TXT)</label><input type="file" id="file" accept=".pdf,.docx,.txt"></div>
+<div class="note" id="saved1"></div>
+<div class="btns"><button class="btn" id="rm1">Remove resume</button><button class="btn pri" id="save">Save profile</button></div>
+<div class="note" id="msg"></div>
+</div>
+
+<div class="card">
+<h2>ATS Resume Checker</h2>
+<p class="note">Checks your uploaded resume for common ATS issues. This is an estimate, not a real company ATS.</p>
+<div class="field"><label>Resume file (PDF, DOCX or TXT)</label><input type="file" id="file2" accept=".pdf,.docx,.txt"></div>
+<div class="note" id="saved2"></div>
+<div class="field"><label>Job description (optional, paste it to get a job-specific match)</label><textarea id="jd" placeholder="Paste the job description here"></textarea></div>
+<div class="btns"><button class="btn" id="rm2">Remove saved resume</button><button class="btn pri" id="check">Check my resume</button><button class="btn pri" id="match">Match with job description</button><button class="btn" disabled title="Needs the backend (later phase)">Get AI suggestions</button></div>
+<div class="res hide" id="atsout"></div>
+</div>
+</section>
+
+<section id="p2" class="hide">
+<div class="card">
+<h2>Search job portals</h2>
+<div class="row3">
+<div><label>Role (suggested from your profile)</label><select id="role"></select></div>
+<div><label>Location (from your profile)</label><input type="text" id="loc2"></div>
+<div><label>Posted within</label><select id="age"><option value="0">Last 24 hours</option><option value="1">Last 3 days</option><option value="2">Last 7 days</option><option value="3">Last 30 days</option></select></div>
+</div>
+<div class="note" id="why"></div>
+<label class="chk"><input type="checkbox" id="fresher" checked> Fresher / entry-level only</label>
+<div class="note">Tap a portal to open its latest listings in a new tab:</div>
+<div class="portals" id="portals"></div>
+<div class="note">These are external search links; nothing is searched inside this app. Date filters work on LinkedIn, Naukri, Indeed, Google Jobs, Foundit and Glassdoor. On other sites, check the sort order yourself. Pick a job and apply on the site yourself.</div>
+</div>
+</section>
+
+<section id="p3" class="hide">
+<div class="card">
+<h2>Your applications</h2>
+<div class="stat"><div><b id="s1">0</b><span>Applied this week</span></div><div><b id="s2">0</b><span>Interviews</span></div><div><b id="s3">0</b><span>Offers</span></div></div>
+<div class="chips" id="filt"></div>
+<div id="joblist"></div>
+</div>
+<div class="card">
+<h2>Add a job</h2>
+<div class="row5">
+<div><label>Job title</label><input type="text" id="nj_t"></div>
+<div><label>Company</label><input type="text" id="nj_c"></div>
+<div><label>Posting link (optional)</label><input type="text" id="nj_u" placeholder="https://"></div>
+<div><label>Status</label><select id="nj_s"></select></div>
+</div>
+<div class="btns"><button class="btn pri" id="nj_add">Add to tracker</button></div>
+<div class="note" id="nj_m"></div>
+</div>
+<div class="card">
+<h2>Skills to learn</h2>
+<div class="note">Keywords that keep missing from your resume across your tracked jobs (rejected ones excluded) and aren’t in your profile skills. Learn the repeated ones first.</div>
+<div class="chips" id="learn"></div>
+</div>
+<div class="card">
+<h2>Backup and restore</h2>
+<div class="note">Your data lives only in this browser. Create a backup, copy it somewhere safe (a notes app, or email it to yourself), and paste it here later to restore on any device. Your resume file isn’t included, so re-upload it after restoring.</div>
+<textarea id="bk" placeholder="Backup text appears here, or paste a backup to restore"></textarea>
+<div class="btns" style="margin-top:10px"><button class="btn pri" id="bk_make">Create backup</button><button class="btn" id="bk_copy">Copy</button><button class="btn" id="bk_rest">Restore from pasted text</button></div>
+<div class="note" id="bk_m"></div>
+</div>
+</section>
+<p class="note">Your details and resume stay in your own browser; they aren’t uploaded or shared. Scores are estimates. Portal buttons open external sites, so apply there yourself.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+var $=function(i){return document.getElementById(i)};
+var KEY="jaa_public_v1";
+var P={name:"",email:"",phone:"",loc:"",skills:"",resume:null,accent:"#7f95ff"};
+try{var s=localStorage.getItem(KEY);if(s)P=Object.assign(P,JSON.parse(s))}catch(e){}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(P));return true}catch(e){return false}}
+
+/* ---------- matching helpers ---------- */
+function esc(s){return s.replace(/[.*+?^${}()|[\]\\\/]/g,"\\$&")}
+function norm(t){return t.toLowerCase().replace(/powerbi/g,"power bi").replace(/scikit[\s_]learn/g,"scikit-learn").replace(/node\.?js/g,"node.js").replace(/\brest(ful)? apis?\b/g,"rest api")}
+function has(h,k){return new RegExp("(^|[^a-z0-9+#.])"+esc(k)+"($|[^a-z0-9+#])").test(h)}
+var DICT=["python","sql","mysql","postgresql","django","flask","fastapi","rest api","git","github","linux","aws","docker","kubernetes","pandas","numpy","scikit-learn","machine learning","deep learning","tensorflow","pytorch","power bi","tableau","excel","html","css","javascript","typescript","react","node.js","java","c++","c#",".net","spring boot","mongodb","redis","jira","servicenow","itil","active directory","networking","tcp/ip","dns","dhcp","troubleshooting","ticketing","sla","data structures","algorithms","oop","api","json","postman","agile","scrum","ci/cd","jenkins","azure","gcp","matplotlib","seaborn","statistics","data cleaning","data visualization","eda","nlp","spark","selenium","testing","windows","bash","shell scripting","sap","oracle","dax"];
+var ROLES={
+"Python Developer":["python","django","flask","fastapi","rest api","sql"],
+"Software Engineer":["python","git","sql","data structures","algorithms","rest api","linux","django"],
+"Backend Developer":["django","flask","fastapi","sql","mysql","rest api","api","postgresql"],
+"Full Stack Developer":["django","html","css","javascript","react","sql","rest api"],
+"IT Support":["linux","aws","windows","networking","troubleshooting","dns","tcp/ip"],
+"Service Desk Analyst":["servicenow","itil","ticketing","active directory","dns","linux","sla"],
+"Data Scientist":["python","pandas","numpy","scikit-learn","machine learning","sql","matplotlib"],
+"Data Analyst":["sql","excel","power bi","tableau","pandas","python","data visualization"],
+"Machine Learning Engineer":["scikit-learn","machine learning","pytorch","tensorflow","python","pandas"]};
+function haystack(){return norm(P.skills+" \n "+(P.resume&&P.resume.text||""))}
+function rank(){var h=haystack(),out=[];
+for(var r in ROLES){out.push({r:r,f:ROLES[r].filter(function(k){return has(h,k)})})}
+out.sort(function(a,b){return b.f.length-a.f.length});return out}
+
+/* ---------- portal links ---------- */
+function slug(t){return t.toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+function enc(t){return encodeURIComponent(t)}
+var LI=["r86400","r259200","r604800","r2592000"],DAYS=[1,3,7,30],GJ=["today","3days","week","month"];
+var PORTALS=[
+["LinkedIn",function(r,l,a,f){return "https://www.linkedin.com/jobs/search/?keywords="+enc(r)+"&location="+enc(l)+"&f_TPR="+LI[a]+(f?"&f_E=1%2C2":"")}],
+["Naukri",function(r,l,a,f){return "https://www.naukri.com/"+slug(r)+"-jobs-in-"+slug(l)+"?jobAge="+DAYS[a]+(f?"&experience=0":"")}],
+["Indeed",function(r,l,a,f){return "https://in.indeed.com/jobs?q="+enc(r+(f?" fresher":""))+"&l="+enc(l)+"&fromage="+DAYS[a]}],
+["Internshala",function(r,l){return "https://internshala.com/jobs/"+slug(r)+"-jobs-in-"+slug(l)+"/"}],
+["Internshala internships",function(r,l){return "https://internshala.com/internships/"+slug(r)+"-internship-in-"+slug(l)+"/"}],
+["Google Jobs",function(r,l,a,f){return "https://www.google.com/search?q="+enc(r+(f?" fresher":"")+" jobs in "+l)+"&ibp=htl;jobs&htichips=date_posted:"+GJ[a]}],
+["Foundit",function(r,l,a,f){return "https://www.foundit.in/srp/results?query="+enc(r+(f?" fresher":""))+"&locations="+enc(l)+"&jobFreshness="+DAYS[a]}],
+["Glassdoor",function(r,l,a,f){return "https://www.glassdoor.co.in/Job/jobs.htm?sc.keyword="+enc(r+(f?" fresher":""))+"&locKeyword="+enc(l)+"&fromAge="+DAYS[a]}],
+["Shine",function(r,l){return "https://www.shine.com/job-search/"+slug(r)+"-jobs-in-"+slug(l)}],
+["TimesJobs",function(r,l,a,f){return "https://www.timesjobs.com/candidate/job-search.html?searchType=personalizedSearch&from=submit&txtKeywords="+enc(r+(f?" fresher":""))+"&txtLocation="+enc(l)}],
+["Instahyre",function(r){return "https://www.instahyre.com/search-jobs/?search="+enc(r)}],
+["Cutshort",function(r){return "https://cutshort.io/jobs?q="+enc(r)}],
+["Wellfound (startups)",function(r,l){return "https://wellfound.com/role/l/"+slug(r)+"/"+slug(l)}],
+["Unstop",function(r){return "https://unstop.com/jobs?searchTerm="+enc(r)}],
+["Apna",function(r){return "https://apna.co/jobs?search="+enc(r)}]];
+
+function renderPortals(){
+var r=$("role").value,l=$("loc2").value.trim()||"Bengaluru",a=+$("age").value,f=$("fresher").checked;
+$("portals").innerHTML=PORTALS.map(function(p){return '<a target="_blank" rel="noopener noreferrer" href="'+p[1](r,l,a,f)+'">'+p[0]+'</a>'}).join("");
+var x=rank().filter(function(o){return o.r===r})[0];
+$("why").textContent=x&&x.f.length?("Roles are ranked from your skills and resume. "+r+" (found: "+x.f.join(", ")+")."):"No matching skills found for this role yet. Add skills in your profile."}
+function fillRoles(){var rk=rank(),cur=$("role").value;
+$("role").innerHTML=rk.map(function(o,i){return '<option value="'+o.r+'">'+o.r+(i===0&&o.f.length?" ★ best match":"")+'</option>'}).join("");
+if(cur&&ROLES[cur])$("role").value=cur;renderPortals()}
+
+/* ---------- profile ---------- */
+function showSaved(){var r=P.resume,t="No resume saved yet.";
+if(r)t="Saved resume: "+r.name+" ("+r.chars+" characters)"+(r.chars<100?" — little or no text found; it may be a scanned image. Try a TXT or DOCX copy.":"");
+$("saved1").textContent=t;$("saved2").textContent=t}
+function skillSuggest(){var have=norm(P.skills),h=norm(P.resume&&P.resume.text||"");
+var add=P.resume&&P.resume.text?DICT.filter(function(k){return has(h,k)&&!has(have,k)}):[];
+$("sugg").innerHTML=add.length?'<span class="note" style="margin:0">Found in your resume, tap to add:</span>'+add.slice(0,14).map(function(k){return '<span class="chip add" data-k="'+k+'">+ '+k+'</span>'}).join(""):""}
+function load(){$("name").value=P.name;$("email").value=P.email;$("phone").value=P.phone;$("loc").value=P.loc;$("loc2").value=P.loc;$("skills").value=P.skills;showSaved();skillSuggest();fillRoles()}
+function grab(){P.name=$("name").value.trim();P.email=$("email").value.trim();P.phone=$("phone").value.trim();P.loc=$("loc").value.trim()||"Bengaluru";P.skills=$("skills").value.trim()}
+$("sugg").onclick=function(e){var k=e.target.getAttribute&&e.target.getAttribute("data-k");if(!k)return;
+$("skills").value=($("skills").value.replace(/[,\s]+$/,"")+", "+k).replace(/^,\s*/,"");grab();persist();skillSuggest();fillRoles()};
+$("save").onclick=function(){grab();var ok=persist();$("msg").textContent=ok?"Profile saved on this device.":"Couldn’t save (browser storage unavailable).";$("loc2").value=P.loc;skillSuggest();fillRoles()};
+function rmResume(){P.resume=null;$("file").value="";$("file2").value="";persist();showSaved();skillSuggest();fillRoles();$("atsout").classList.add("hide")}
+$("rm1").onclick=rmResume;$("rm2").onclick=rmResume;
+
+/* ---------- resume reading ---------- */
+function readBuf(f){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){ok(r.result)};r.onerror=no;r.readAsArrayBuffer(f)})}
+async function pdfText(buf){
+if(typeof pdfjsLib==="undefined")throw new Error("PDF reader failed to load");
+pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+var d=await pdfjsLib.getDocument({data:buf}).promise,t="";
+for(var i=1;i<=d.numPages;i++){var c=await (await d.getPage(i)).getTextContent();
+t+=c.items.map(function(x){return x.str+(x.hasEOL?"\n":" ")}).join("")+"\n"}
+return t}
+async function extract(f){var ext=f.name.split(".").pop().toLowerCase(),buf=await readBuf(f);
+if(ext==="txt")return new TextDecoder().decode(buf);
+if(ext==="docx"){if(typeof mammoth==="undefined")throw new Error("DOCX reader failed to load");return (await mammoth.extractRawText({arrayBuffer:buf})).value}
+if(ext==="pdf")return pdfText(buf);
+throw new Error("Unsupported file type")}
+async function onFile(e){var f=e.target.files[0];if(!f)return;
+if(f.size>5*1024*1024){$("saved1").textContent=$("saved2").textContent="File is over 5 MB. Please use a smaller file.";return}
+$("saved1").textContent=$("saved2").textContent="Reading "+f.name+"…";
+try{var t=(await extract(f)).replace(/[ \t]+/g," ").trim().slice(0,60000);
+P.resume={name:f.name,chars:t.length,text:t};persist()}
+catch(err){P.resume=null;$("saved1").textContent=$("saved2").textContent="Couldn’t read that file ("+err.message+"). Try a TXT or DOCX copy.";return}
+showSaved();skillSuggest();fillRoles()}
+$("file").onchange=onFile;$("file2").onchange=onFile;
+
+/* ---------- ATS ---------- */
+function ring(sc){var c=2*Math.PI*42,o=c*(1-sc/100);
+return '<svg width="110" height="110" viewBox="0 0 110 110"><circle cx="55" cy="55" r="42" fill="none" stroke="var(--line)" stroke-width="10"/><circle cx="55" cy="55" r="42" fill="none" stroke="var(--ac)" stroke-width="10" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+o+'" transform="rotate(-90 55 55)"/><text x="55" y="62" text-anchor="middle" fill="var(--tx)" font-size="26" font-weight="700">'+sc+'</text></svg>'}
+function general(t){var lc=t.toLowerCase();
+return [["Email address",/[\w.+-]+@[\w-]+\.[\w.]+/.test(t)],["Phone number",/\+?\d[\d\s-]{8,}\d/.test(t)],["Education section",/education|academic/.test(lc)],["Skills section",/skills/.test(lc)],["Projects or experience section",/projects?|experience|internship|training/.test(lc)],["GitHub or LinkedIn link",/github|linkedin/.test(lc)],["Bullet points used",/[•▪●◦]|^\s*[-*]\s/m.test(t)],["Reasonable length (1,200 to 6,000 characters)",t.length>=1200&&t.length<=6000]]}
+function needResume(o){o.classList.remove("hide");
+if(!P.resume||P.resume.chars<100){o.innerHTML='<span class="bad">Upload a resume with readable text first (PDF, DOCX or TXT).</span>';return true}return false}
+$("check").onclick=function(){var o=$("atsout");if(needResume(o))return;
+var tests=general(P.resume.text),n=tests.filter(function(x){return x[1]}).length,sc=Math.round(n/tests.length*100);
+o.innerHTML='<div class="rh">'+ring(sc)+'<div><strong>Estimated ATS readiness</strong><div class="note" style="margin:2px 0 0">Simple rule-based checks, not a real ATS. Each of the '+tests.length+' checks is worth the same.</div></div></div><ul>'+tests.map(function(x){return '<li class="'+(x[1]?"ok":"bad")+'">'+(x[1]?"✓ ":"✗ ")+x[0]+'</li>'}).join("")+'</ul>'};
+$("match").onclick=function(){var o=$("atsout"),jd=norm($("jd").value);if(needResume(o))return;
+if(jd.trim().length<40){o.innerHTML='<span class="bad">Paste a job description first (at least a few lines).</span>';return}
+var keys=DICT.filter(function(k){return has(jd,k)}),fb=false;
+if(keys.length<3){fb=true;var stop=/^(with|that|this|have|will|from|your|their|about|work|team|years|experience|ability|skills|strong|good|knowledge|required|candidate|role|job|using|and|the|for|are|you|our)$/,cnt={};
+jd.split(/[^a-z0-9+#.]+/).forEach(function(w){if(w.length>3&&!stop.test(w))cnt[w]=(cnt[w]||0)+1});
+keys=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a]}).slice(0,12)}
+var rt=norm(P.resume.text),got=keys.filter(function(k){return has(rt,k)}),miss=keys.filter(function(k){return got.indexOf(k)<0});
+var g=general(P.resume.text),contact=(g[0][1]?1:0)+(g[1][1]?1:0),sec=(g[2][1]?1:0)+(g[3][1]?1:0)+(g[4][1]?1:0);
+var cov=got.length/keys.length,sc=Math.round(70*cov+15*sec/3+15*contact/2);
+var chips=function(a,c){return a.length?'<div class="chips">'+a.map(function(k){return '<span class="chip '+c+'">'+k+'</span>'}).join("")+'</div>':'<div class="note">None</div>'};
+o.innerHTML='<div class="rh">'+ring(sc)+'<div><strong>Estimated match with this job</strong><div class="note" style="margin:2px 0 0">Estimate only, not an employer ATS score.</div></div></div>'
++'<h3>How it’s scored</h3><ul><li>Keyword coverage: '+got.length+' of '+keys.length+' job keywords found in your resume = '+Math.round(70*cov)+' / 70</li><li>Key sections (education, skills, projects or experience): '+Math.round(15*sec/3)+' / 15</li><li>Contact details (email, phone): '+Math.round(15*contact/2)+' / 15</li></ul>'
++'<h3>Matched keywords</h3>'+chips(got,"ok")+'<h3>Missing from your resume</h3>'+chips(miss,"bad")
++'<div class="note">Only add a missing keyword if you genuinely have that skill. Otherwise treat it as something to learn.'+(fb?' No standard tech terms were found in this job description, so the most frequent words were used instead; treat the score loosely.':'')+'</div>'
++tailor(jd)+'<h3>Track this job</h3><div class="row3"><input type="text" id="jt" placeholder="Job title"><input type="text" id="jc" placeholder="Company"><button class="btn pri" id="savejob">Save to tracker</button></div><div class="note" id="jmsg"></div>';
+LAST={score:sc,missing:miss,fb:fb}};
+
+/* ---------- accent + tabs ---------- */
+var ACC=["#7f95ff","#5fd0b5","#f0a35e","#e384c4"];
+function setAcc(c){document.documentElement.style.setProperty("--ac",c);P.accent=c;
+$("sw").innerHTML=ACC.map(function(a){return '<i data-c="'+a+'" style="background:'+a+'" class="'+(a===c?"on":"")+'"></i>'}).join("")}
+$("sw").onclick=function(e){var c=e.target.getAttribute&&e.target.getAttribute("data-c");if(c){setAcc(c);persist()}};
+/* ---------- tracker ---------- */
+var STAT=["Saved","Ready to Apply","Applied","Assessment","Interview","Rejected","Offer"],LAST=null,FILT="All";
+function h(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function safeUrl(u){return /^https?:\/\//i.test(u||"")?u:""}
+function addJob(j){P.jobs=P.jobs||[];var k=(j.title+"|"+j.company).toLowerCase();
+if(P.jobs.some(function(x){return (x.title+"|"+x.company).toLowerCase()===k}))return false;
+var n=Date.now();j.id=n+""+Math.floor(Math.random()*1000);j.added=n;j.updated=n;if(j.status==="Applied")j.appliedOn=n;P.jobs.push(j);persist();return true}
+function renderTracker(){var J=P.jobs||[],wk=Date.now()-7*864e5;
+$("s1").textContent=J.filter(function(x){return x.appliedOn&&x.appliedOn>wk}).length;
+$("s2").textContent=J.filter(function(x){return x.status==="Interview"}).length;
+$("s3").textContent=J.filter(function(x){return x.status==="Offer"}).length;
+$("nj_s").innerHTML=STAT.map(function(s){return '<option>'+s+'</option>'}).join("");
+$("filt").innerHTML=["All"].concat(STAT).map(function(s){var n=s==="All"?J.length:J.filter(function(x){return x.status===s}).length;return '<span class="chip f'+(s===FILT?" sel":"")+'" data-f="'+s+'">'+s+' '+n+'</span>'}).join("");
+var L=J.filter(function(x){return FILT==="All"||x.status===FILT}).sort(function(a,b){return b.updated-a.updated});
+$("joblist").innerHTML=L.length?L.map(function(x){return '<div class="job" data-id="'+x.id+'"><div class="jh"><div><strong>'+h(x.title)+'</strong> · '+h(x.company)+(x.score!=null?' <span class="chip">match ~'+x.score+'</span>':'')+'</div><select class="st">'+STAT.map(function(s){return '<option'+(s===x.status?" selected":"")+'>'+s+'</option>'}).join("")+'</select></div>'+(x.missing&&x.missing.length?'<div class="chips">'+x.missing.slice(0,8).map(function(k){return '<span class="chip bad">'+h(k)+'</span>'}).join("")+'</div>':"")+'<input type="text" class="nt" placeholder="Notes" value="'+h(x.notes||"")+'"><div class="btns" style="margin-top:8px">'+(safeUrl(x.url)?'<a class="btn" target="_blank" rel="noopener noreferrer" href="'+h(x.url)+'" style="text-decoration:none">Open posting</a>':"")+'<button class="btn del">Delete</button></div></div>'}).join(""):'<div class="note">'+(J.length?"No jobs with this status.":"No jobs yet. Add one below, or save one after a job description match.")+'</div>';
+var c={},have=norm(P.skills);J.forEach(function(x){if(x.status!=="Rejected")(x.missing||[]).forEach(function(k){if(!has(have,k))c[k]=(c[k]||0)+1})});
+var ks=Object.keys(c).sort(function(a,b){return c[b]-c[a]}).slice(0,12);
+$("learn").innerHTML=ks.length?ks.map(function(k){return '<span class="chip bad">'+h(k)+(c[k]>1?" ×"+c[k]:"")+'</span>'}).join(""):'<span class="note" style="margin:0">Nothing yet. Match a job description and save the job to see gaps here.</span>'}
+$("joblist").onchange=function(e){var box=e.target.closest(".job");if(!box)return;var x=(P.jobs||[]).filter(function(j){return j.id===box.getAttribute("data-id")})[0];if(!x)return;
+if(e.target.classList.contains("st")){x.status=e.target.value;if(x.status==="Applied"&&!x.appliedOn)x.appliedOn=Date.now()}
+else if(e.target.classList.contains("nt"))x.notes=e.target.value.slice(0,500);else return;
+x.updated=Date.now();persist();renderTracker()};
+$("joblist").onclick=function(e){var b=e.target;if(!b.classList.contains("del"))return;
+if(!b.getAttribute("data-arm")){b.setAttribute("data-arm","1");b.textContent="Tap again to delete";return}
+var id=b.closest(".job").getAttribute("data-id");P.jobs=(P.jobs||[]).filter(function(j){return j.id!==id});persist();renderTracker()};
+$("filt").onclick=function(e){var f=e.target.getAttribute&&e.target.getAttribute("data-f");if(f){FILT=f;renderTracker()}};
+$("nj_add").onclick=function(){var t=$("nj_t").value.trim(),c=$("nj_c").value.trim(),u=$("nj_u").value.trim();
+if(!t||!c){$("nj_m").textContent="Enter a job title and company.";return}
+if(u&&!safeUrl(u)){$("nj_m").textContent="The link must start with http:// or https://";return}
+var ok=addJob({title:t,company:c,url:u,status:$("nj_s").value,notes:"",score:null,missing:[]});
+$("nj_m").textContent=ok?"Added.":"That job is already in your tracker.";if(ok){$("nj_t").value=$("nj_c").value=$("nj_u").value="";renderTracker()}};
+$("atsout").onclick=function(e){if(e.target.id!=="savejob")return;var t=$("jt").value.trim(),c=$("jc").value.trim();
+if(!t||!c){$("jmsg").textContent="Enter a job title and company.";return}
+var ok=addJob({title:t,company:c,url:"",status:"Saved",notes:"",score:LAST?LAST.score:null,missing:LAST&&!LAST.fb?LAST.missing:[]});
+$("jmsg").textContent=ok?"Saved to tracker (see the Tracker tab).":"That job is already in your tracker."};
+
+function tailor(jd){var sk=P.skills.split(",").map(function(s){return s.trim()}).filter(Boolean);if(!sk.length)return "";
+var a=[],b=[];sk.forEach(function(s){(has(jd,norm(s))?a:b).push(s)});
+return '<h3>Suggested skills line</h3><div class="note">Your own profile skills, reordered so the ones this job asks for come first. Nothing is added.</div><textarea readonly style="min-height:60px" onclick="this.select()">'+h(a.concat(b).join(", "))+'</textarea>'}
+var RARM=false;
+$("bk_make").onclick=function(){var d={v:1,profile:{name:P.name,email:P.email,phone:P.phone,loc:P.loc,skills:P.skills,accent:P.accent},jobs:P.jobs||[]};
+$("bk").value=JSON.stringify(d);$("bk_m").textContent="Backup created with "+d.jobs.length+" job(s). Tap Copy."};
+$("bk_copy").onclick=function(){var t=$("bk");if(!t.value){$("bk_m").textContent="Create a backup first.";return}
+t.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}
+$("bk_m").textContent=ok?"Copied.":"Couldn’t copy automatically. The text is selected, so copy it manually."};
+$("bk_rest").onclick=function(){var d;
+try{d=JSON.parse($("bk").value)}catch(e){$("bk_m").textContent="That isn’t a valid backup.";RARM=false;return}
+if(!d||d.v!==1||!d.profile||!Array.isArray(d.jobs)){$("bk_m").textContent="That isn’t a valid backup.";RARM=false;return}
+if(!RARM){RARM=true;$("bk_m").textContent="This replaces your current profile and jobs. Tap Restore again to confirm.";return}
+RARM=false;var p=d.profile,S=function(v,n){return String(v==null?"":v).slice(0,n)};
+P.name=S(p.name,100);P.email=S(p.email,100);P.phone=S(p.phone,30);P.loc=S(p.loc,60)||"Bengaluru";P.skills=S(p.skills,2000);if(ACC.indexOf(p.accent)>-1)P.accent=p.accent;
+P.jobs=d.jobs.slice(0,500).filter(function(j){return j&&typeof j.title==="string"&&typeof j.company==="string"}).map(function(j,i){
+return {id:S(j.id,40)||(Date.now()+""+i),title:S(j.title,200),company:S(j.company,200),url:safeUrl(S(j.url,500)),status:STAT.indexOf(j.status)>-1?j.status:"Saved",notes:S(j.notes,500),score:typeof j.score==="number"?j.score:null,missing:Array.isArray(j.missing)?j.missing.slice(0,20).map(function(k){return S(k,40)}):[],added:+j.added||Date.now(),updated:+j.updated||Date.now(),appliedOn:+j.appliedOn||undefined}});
+persist();load();setAcc(P.accent);renderTracker();$("bk_m").textContent="Restored "+P.jobs.length+" job(s)."};
+function tab(n){[1,2,3].forEach(function(i){$("p"+i).classList.toggle("hide",n!==i);$("t"+i).classList.toggle("on",n===i)});if(n===2){grab();$("loc2").value=P.loc;fillRoles()}if(n===3){grab();renderTracker()}}
+$("t1").onclick=function(){tab(1)};$("t2").onclick=function(){tab(2)};$("t3").onclick=function(){tab(3)};
+["role","age","fresher"].forEach(function(i){$(i).onchange=renderPortals});$("loc2").oninput=renderPortals;
+setAcc(P.accent);load();
+</script>
+</body>
+</html>
